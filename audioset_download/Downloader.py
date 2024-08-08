@@ -113,15 +113,27 @@ class Downloader:
         else:
             display_label = self.machine_to_display_mapping[positive_labels.split(',')[0]]
             os.makedirs(os.path.join(self.root_path, display_label), exist_ok=True)
-
+        
+        # print('\n')
+        # print('# Download the file using yt-dlp')
+        # print('ytid:', ytid)
+        # print('start_seconds:', start_seconds)
+        # print('end_seconds:', end_seconds)
         # Download the file using yt-dlp
         # store in the folder of the first label
         first_display_label = self.machine_to_display_mapping[positive_labels.split(',')[0]]
-        os.system(f'yt-dlp -x --audio-format {self.format} --audio-quality {self.quality} --output "{os.path.join(self.root_path, first_display_label, ytid)}_{start_seconds}-{end_seconds}.%(ext)s" --postprocessor-args "-ss {start_seconds} -to {end_seconds}" https://www.youtube.com/watch?v={ytid}')
+        # os.system(f'yt-dlp -x --audio-format {self.format}' \
+        #           + ' ' + f'--audio-quality {self.quality}' \
+        #           + ' ' + f'--output "{os.path.join(self.root_path, first_display_label, ytid)}_{start_seconds}-{end_seconds}.%(ext)s"' \
+        #           + ' ' + f'--postprocessor-args "-ss {start_seconds} -to {end_seconds}" https://www.youtube.com/watch?v={ytid}')
+        os.system(f'yt-dlp -x --audio-format {self.format}' \
+                  + ' ' + f'--audio-quality {self.quality}' \
+                  + ' ' + f'--output "{os.path.join(self.root_path, first_display_label, ytid)}_{start_seconds}-{end_seconds}.%(ext)s"' \
+                  + ' ' + f'--download-sections "*{start_seconds}-{end_seconds}" https://www.youtube.com/watch?v={ytid}')
         
         if self.copy_and_replicate:
             # copy the file in the other folders
             for label in positive_labels.split(',')[1:]:
                 display_label = self.machine_to_display_mapping[label]
-                os.system(f'cp "{os.path.join(self.root_path, first_display_label, ytid)}_{start_seconds}-{end_seconds}.wav" "{os.path.join(self.root_path, display_label, ytid)}_{start_seconds}-{end_seconds}.wav"')
+                os.system(f'cp "{os.path.join(self.root_path, display_label, ytid)}_{start_seconds}-{end_seconds}.wav" "{os.path.join(self.root_path, display_label, ytid)}_{start_seconds}-{end_seconds}.wav"')
         return

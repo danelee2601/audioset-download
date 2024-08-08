@@ -9,12 +9,18 @@ The code is provided as-is, and is not officially supported by Google.
 
 ## Installation
 
+`ffmpeg` must be installed.
+
+For Linux:
 ```bash
 # Install ffmpeg
 sudo apt install ffmpeg
 # Install audioset-download
 pip install audioset-download
 ```
+
+For Windows, follow https://phoenixnap.com/kb/ffmpeg-windows
+
 
 ## Usage
 
@@ -24,8 +30,13 @@ If a file is associated to multiple labels, it will be stored only once, and ass
 
 ```python
 from audioset_download import Downloader
-d = Downloader(root_path='test', labels=["Speech", "Afrobeat"], n_jobs=2, download_type='unbalanced_train', copy_and_replicate=False)
-d.download(format = 'vorbis')
+
+d = Downloader(root_path='test', 
+               labels=["Water"], 
+               n_jobs=1, 
+               download_type='unbalanced_train', 
+               copy_and_replicate=False)
+d.download(format = 'wav')
 ```
 
 ## Implementation
