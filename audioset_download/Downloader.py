@@ -65,8 +65,24 @@ class Downloader:
         self.quality = quality
 
         # Load the metadata
+        # metadata = pd.read_csv(
+        #     f"http://storage.googleapis.com/us_audioset/youtube_corpus/v1/csv/{self.download_type}_segments.csv", 
+        #     sep=', ', 
+        #     skiprows=3,
+        #     header=None,
+        #     names=['YTID', 'start_seconds', 'end_seconds', 'positive_labels'],
+        #     engine='python'
+        # )
+        if self.download_type == 'balanced_train':
+            meta_fname = os.path.join('audioset_download', 'balanced_train_segments.csv')
+        elif self.download_type == 'unbalanced_train':
+            meta_fname = os.path.join('audioset_download', 'unbalanced_train_segments.csv')
+        elif self.download_type == 'eval':
+            meta_fname = os.path.join('audioset_download', 'eval_segments.csv')
+
         metadata = pd.read_csv(
-            f"http://storage.googleapis.com/us_audioset/youtube_corpus/v1/csv/{self.download_type}_segments.csv", 
+            # f"http://storage.googleapis.com/us_audioset/youtube_corpus/v1/csv/{self.download_type}_segments.csv", 
+            meta_fname,
             sep=', ', 
             skiprows=3,
             header=None,
